@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>YouTube Downloader | تحميل فيديوهات يوتيوب بسهولة</title>
+    <meta name="description" content="أداة سريعة ومجانية لتحميل فيديوهات YouTube. ضع رابط الفيديو واختر الجودة والصيغة المناسبة للتحميل (MP4, MP3).">
+    <meta name="keywords" content="تحميل يوتيوب, تنزيل فيديو, يوتيوب MP4, يوتيوب MP3, YouTube Downloader">
+    <meta name="author" content="YouTube Downloader">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph (Social Media) -->
+    <meta property="og:title" content="YouTube Downloader | تحميل فيديوهات يوتيوب بسهولة">
+    <meta property="og:description" content="أداة سريعة ومجانية لتحميل فيديوهات YouTube. ضع رابط الفيديو واختر الجودة.">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts: Cairo for modern Arabic UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables for Light/Dark Mode */
+        :root {
+            --primary-color: #ff0000;
+            --primary-hover: #cc0000;
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --success-color: #198754;
+            --error-color: #dc3545;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-primary: #e9ecef;
+            --text-secondary: #adb5bd;
+            --border-color: #343a40;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--surface-color);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .search-box {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            background: var(--surface-color);
+            padding: 10px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .search-box button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-box button:hover {
+            background-color: var(--primary-hover);
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+                border-radius: 20px;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+            .search-box input {
+                background: var(--surface-color);
+                border-radius: 12px;
+                border: 1px solid var(--border-color);
+                margin-bottom: 10px;
+            }
+            .search-box button {
+                border-radius: 12px;
+                width: 100%;
+            }
+        }
+
+        /* Status & Results Area */
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: none;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .status-message.error {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+            display: block;
+        }
+
+        .status-message.loading {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: #4361ee;
+            border: 1px solid #4361ee;
+            display: block;
+        }
+
+        .result-card {
+            display: none;
+            background-color: var(--surface-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 900px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .result-header {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .result-header {
+                flex-direction: column;
+            }
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .video-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .video-info p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .download-options h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .download-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Sections: How it works & Features */
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 40px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* FAQ Accordion */
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+
+        .faq-item {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 200px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--surface-color);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        /* Policy Alert */
+        .policy-alert {
+            background-color: rgba(255, 193, 7, 0.1);
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 80px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="var(--primary-color)"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                YouTube <span>Downloader</span>
+            </a>
+            <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">🌙</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero container">
+            <h1>تحميل فيديوهات YouTube بسهولة</h1>
+            <p>أداة مجانية لتحميل مقاطع الفيديو والمقاطع الصوتية. ضع رابط الفيديو واختر الجودة والصيغة المناسبة (MP4 أو MP3) في ثوانٍ.</p>
+            
+            <form id="downloadForm" class="search-box">
+                <input type="text" id="videoUrl" placeholder="ألصق رابط فيديو يوتيوب هنا (مثال: https://www.youtube.com/watch?v=...)" required>
+                <button type="submit" id="analyzeBtn">تحليل الفيديو</button>
+            </form>
+
+            <div id="statusMessage" class="status-message"></div>
+        </section>
+
+        <!-- Dynamic Results Area -->
+        <section id="resultsArea" class="container" style="display: none;">
+            <div class="result-card">
+                <div class="result-header">
+                    <img id="videoThumbnail" src="" alt="Video Thumbnail" class="video-thumbnail">
+                    <div class="video-info">
+                        <h3 id="videoTitle">عنوان الفيديو يظهر هنا</h3>
+                        <p>المدة: <span id="videoDuration">00:00</span></p>
+                    </div>
+                </div>
+
+                <div class="download-options">
+                    <h4>فيديو (MP4)</h4>
+                    <div id="videoOptions" class="options-grid">
+                        <!-- خيارات الفيديو تُضاف هنا ديناميكياً -->
+                    </div>
+
+                    <h4>صوت (MP3)</h4>
+                    <div id="audioOptions" class="options-grid">
+                        <!-- خيارات الصوت تُضاف هنا ديناميكياً -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="container">
+            <h2 class="section-title">كيف يعمل الموقع؟</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📋</div>
+                    <h3>1. انسخ الرابط</h3>
+                    <p>افتح يوتيوب، وابحث عن الفيديو الذي تريده، ثم انسخ الرابط الخاص به.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✍️</div>
+                    <h3>2. ألصق الرابط</h3>
+                    <p>عد إلى موقعنا وألصق الرابط في مربع البحث المخصص بالأعلى.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>3. اختر الجودة</h3>
+                    <p>انقر على تحليل وانتظر قليلاً لتظهر لك خيارات الجودة المتوفرة.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⬇️</div>
+                    <h3>4. اضغط تحميل</h3>
+                    <p>اختر الصيغة (MP4/MP3) واضغط على زر التحميل ليتم الحفظ في جهازك.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="container">
+            <h2 class="section-title">مميزات الأداة</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <h3>سريع ومجاني</h3>
+                    <p>تحميل الفيديوهات بسرعة فائقة وبدون أي رسوم خفية.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📱</div>
+                    <h3>متوافق مع الهواتف</h3>
+                    <p>واجهة متجاوبة تعمل بكفاءة على جميع الأجهزة المحمولة والكمبيوتر.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🛡️</div>
+                    <h3>بدون تسجيل</h3>
+                    <p>لا نطلب منك إنشاء حساب أو تقديم بيانات شخصية لاستخدام الخدمة.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="container faq-section">
+            <h2 class="section-title">الأسئلة الشائعة</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">كيف أحمل فيديو من يوتيوب؟ <span>+</span></div>
+                <div class="faq-answer">
+                    <p>كل ما عليك فعله هو نسخ رابط الفيديو من تطبيق أو موقع يوتيوب، ولصقه في مربع البحث أعلى هذه الصفحة، ثم الضغط على "تحليل الفيديو" واختيار الجودة المطلوبة.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">هل الموقع يعمل على أجهزة الآيفون والأندرويد؟ <span>+</span></div>
+                <div class="faq-answer">
+                    <p>نعم، الموقع مصمم ليكون متجاوباً بالكامل ويعمل بسلاسة على كافة أنظمة التشغيل (iOS, Android, Windows, Mac).</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">ما هي الصيغ المتاحة للتحميل؟ <span>+</span></div>
+                <div class="faq-answer">
+                    <p>نوفر خيارات تحميل الفيديو بصيغة MP4 بجودات متعددة (مثل 1080p, 720p)، بالإضافة إلى إمكانية استخراج الصوت بصيغة MP3.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">لماذا لا يعمل بعض الروابط؟ <span>+</span></div>
+                <div class="faq-answer">
+                    <p>قد تفشل بعض الروابط إذا كان الفيديو خاصاً (Private)، أو مقيداً بعمر معين، أو محذوفاً من المنصة.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Policy Alert -->
+        <div class="container">
+            <div class="policy-alert">
+                <strong>سياسة الاستخدام العادل:</strong> المستخدم هو المسؤول الوحيد عن التأكد من امتلاكه الحقوق أو الإذن اللازم لتنزيل المحتوى. موقعنا أداة تقنية ولا يشجع أو يوافق على أي انتهاك لحقوق الطبع والنشر أو شروط استخدام المنصات.
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" class="logo" style="margin-bottom: 20px;">YouTube <span>Downloader</span></a>
+                <p style="color: var(--text-secondary); font-size: 14px;">أداتك السريعة والموثوقة لتحميل الفيديوهات عبر الإنترنت.</p>
+            </div>
+            <div class="footer-col">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="#">الرئيسية</a></li>
+                    <li><a href="#">كيفية الاستخدام</a></li>
+                    <li><a href="#">الأسئلة الشائعة</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>قانوني</h4>
+                <ul>
+                    <li><a href="#">شروط الاستخدام</a></li>
+                    <li><a href="#">سياسة الخصوصية</a></li>
+                    <li><a href="#">حقوق الطبع والنشر</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>تواصل معنا</h4>
+                <ul>
+                    <li><a href="#">اتصل بنا</a></li>
+                    <li><a href="#">الدعم الفني</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 YouTube Downloader. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // 1. Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        
+        // التحقق من الوضع المحفوظ في المتصفح
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeToggleBtn.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // 2. FAQ Accordion Logic
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                // إغلاق جميع الأسئلة الأخرى
+                faqItems.forEach(i => i.classList.remove('active'));
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // 3. Form Submission and API Integration Architecture
+        const downloadForm = document.getElementById('downloadForm');
+        const videoUrlInput = document.getElementById('videoUrl');
+        const statusMessage = document.getElementById('statusMessage');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resultsArea = document.getElementById('resultsArea');
+
+        // دالة للتحقق من صحة رابط يوتيوب
+        function isValidYouTubeUrl(url) {
+            const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+            return regex.test(url);
+        }
+
+        function showMessage(msg, type) {
+            statusMessage.textContent = msg;
+            statusMessage.className = `status-message ${type}`;
+        }
+
+        function hideMessage() {
+            statusMessage.className = 'status-message';
+            statusMessage.style.display = 'none';
+        }
+
+        downloadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const url = videoUrlInput.value.trim();
+            
+            hideMessage();
+            resultsArea.style.display = 'none';
+
+            if (!isValidYouTubeUrl(url)) {
+                showMessage('الرابط غير صحيح. يرجى إدخال رابط يوتيوب صالح.', 'error');
+                return;
+            }
+
+            // إظهار حالة التحميل
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = 'جاري التحليل...';
+            showMessage('جاري الاتصال بالخادم وتحليل الفيديو...', 'loading');
+
+            /* 
+             * الهيكلة التقنية للباك إند / API
+             * 
+             * تنبيه تقني هام:
+             * بما أن الموقع مستضاف على GitHub Pages (Frontend فقط)، 
+             * فإنه يحتاج إلى رابط API خارجي (Backend) ليقوم بمعالجة التحميل الفعلي.
+             * 
+             * الكود أدناه مهيأ للربط مع API حقيقي.
+             */
+            
+            const API_ENDPOINT = ""; // ضع رابط الـ API هنا (مثال: https://api.yourservice.com/download?url=)
+
+            try {
+                // محاكاة الاتصال بالخادم (تأخير 1.5 ثانية للواقعية)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                if (!API_ENDPOINT) {
+                    // تطبيق القاعدة: لا نستخدم بيانات تجريبية خادعة إذا لم يكن الـ API متصلاً
+                    throw new Error("NOT_CONFIGURED");
+                }
+
+                // الكود الذي سيعمل مستقبلاً عند ربط الـ API:
+                /*
+                const response = await fetch(`${API_ENDPOINT}${encodeURIComponent(url)}`);
+                if (!response.ok) throw new Error("SERVER_ERROR");
+                
+                const data = await response.json();
+                renderResults(data); // دالة تقوم ببناء أزرار التحميل
+                */
+
+            } catch (error) {
+                if (error.message === "NOT_CONFIGURED") {
+                    showMessage('الخدمة غير مفعلة حالياً. يرجى ربط واجهة برمجة التطبيقات (Backend API) لإتمام التحميل.', 'error');
+                } else {
+                    showMessage('حدث خطأ في الخادم أثناء جلب الفيديو. يرجى المحاولة لاحقاً.', 'error');
+                }
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = 'تحليل الفيديو';
+            }
+        });
+
+        // دالة مستقبلية لعرض النتائج بعد استلامها من الـ API
+        function renderResults(data) {
+            // إخفاء رسالة التحميل
+            hideMessage();
+            
+            // تعبئة البيانات
+            document.getElementById('videoThumbnail').src = data.thumbnail;
+            document.getElementById('videoTitle').textContent = data.title;
+            document.getElementById('videoDuration').textContent = data.duration;
+
+            // تفريغ الأزرار القديمة
+            const videoOptions = document.getElementById('videoOptions');
+            const audioOptions = document.getElementById('audioOptions');
+            videoOptions.innerHTML = '';
+            audioOptions.innerHTML = '';
+
+            // توليد أزرار الفيديو
+            data.videoLinks.forEach(link => {
+                videoOptions.innerHTML += `
+                    <a href="${link.url}" class="download-btn" target="_blank">
+                        <span>${link.quality}</span>
+                        <span>${link.size}</span>
+                    </a>
+                `;
+            });
+
+            // توليد أزرار الصوت
+            data.audioLinks.forEach(link => {
+                audioOptions.innerHTML += `
+                    <a href="${link.url}" class="download-btn" target="_blank">
+                        <span>MP3</span>
+                        <span>${link.size}</span>
+                    </a>
+                `;
+            });
+
+            // عرض مربع النتائج
+            resultsArea.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
