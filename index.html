@@ -6,7 +6,7 @@
     
     <!-- SEO Meta Tags -->
     <title>SaveTube | تحميل فيديوهات يوتيوب بسهولة</title>
-    <meta name="description" content="أداة سريعة ومجانية لتحميل فيديوهات YouTube. ضع رابط الفيديو واختر الجودة والصيغة المناسبة للتحميل (MP4, MP3).">
+    <meta name="description" content="أداة سريعة ومجانية لتحميل فيديوهات YouTube. ضع رابط الفيديو واضغط تحميل بصيغة MP4 أو MP3.">
     
     <!-- Google Fonts: Cairo -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -20,8 +20,6 @@
             --text-primary: #212529;
             --text-secondary: #6c757d;
             --border-color: #dee2e6;
-            --success-color: #198754;
-            --error-color: #dc3545;
             --transition: all 0.3s ease;
         }
 
@@ -95,7 +93,7 @@
         /* Hero Section */
         .hero {
             text-align: center;
-            padding: 60px 0 40px;
+            padding: 70px 0 50px;
         }
 
         .hero h1 {
@@ -108,7 +106,7 @@
             font-size: 16px;
             color: var(--text-secondary);
             max-width: 600px;
-            margin: 0 auto 30px;
+            margin: 0 auto 35px;
         }
 
         .search-box {
@@ -171,80 +169,35 @@
             }
         }
 
-        /* Status & Results */
-        .status-message {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 600;
-            display: none;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .status-message.error {
-            background-color: rgba(220, 53, 69, 0.1);
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
-            display: block;
-        }
-
-        .status-message.loading {
-            background-color: rgba(67, 97, 238, 0.1);
-            color: #4361ee;
-            border: 1px solid #4361ee;
-            display: block;
-        }
-
+        /* Result Card */
         .result-card {
             display: none;
             background-color: var(--surface-color);
             border-radius: 15px;
             padding: 25px;
             margin: 30px auto;
-            max-width: 750px;
+            max-width: 600px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border: 1px solid var(--border-color);
-            text-align: right;
-        }
-
-        .result-header {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .result-header {
-                flex-direction: column;
-                text-align: center;
-            }
+            text-align: center;
         }
 
         .video-thumbnail {
             width: 100%;
-            max-width: 220px;
+            max-width: 280px;
             border-radius: 10px;
+            margin-bottom: 15px;
         }
 
         .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
+            justify-content: center;
+            margin-top: 20px;
         }
 
         .download-btn {
-            display: block;
-            text-align: center;
-            padding: 12px 20px;
+            padding: 12px 25px;
             background-color: var(--primary-color);
             border-radius: 10px;
             color: white;
@@ -255,6 +208,14 @@
 
         .download-btn:hover {
             background-color: var(--primary-hover);
+        }
+
+        .download-btn.mp3 {
+            background-color: #198754;
+        }
+
+        .download-btn.mp3:hover {
+            background-color: #146c43;
         }
 
         /* Sections */
@@ -316,30 +277,22 @@
         <!-- Hero Section -->
         <section class="hero container">
             <h1>تحميل فيديوهات YouTube بسهولة</h1>
-            <p>أداة مجانية لتحميل مقاطع الفيديو والصوت بسرعة فائقة وبدون إعلانات مزعجة.</p>
+            <p>أداة سريعة لتحميل مقاطع الفيديو والصوت بضغطة زر واحدة وبدون إعلانات.</p>
             
             <form id="downloadForm" class="search-box">
                 <input type="text" id="videoUrl" placeholder="ألصق رابط يوتيوب هنا..." required>
                 <button type="submit" id="analyzeBtn">تحليل الفيديو</button>
             </form>
-
-            <div id="statusMessage" class="status-message"></div>
         </section>
 
         <!-- Results Section -->
         <section id="resultsArea" class="container" style="display: none;">
             <div class="result-card">
-                <div class="result-header">
-                    <img id="videoThumbnail" src="" alt="Thumbnail" class="video-thumbnail">
-                    <div>
-                        <h3 id="videoTitle" style="font-size: 18px; margin-bottom: 5px;">جاهز للتحميل</h3>
-                        <p style="color: var(--text-secondary); font-size: 14px;">اختر صيغة التحميل المناسبة لك:</p>
-                    </div>
-                </div>
-
+                <img id="videoThumbnail" src="" alt="Thumbnail" class="video-thumbnail">
+                <h3 id="videoTitle" style="font-size: 18px; margin-bottom: 15px;">اختر صيغة التحميل:</h3>
                 <div class="options-grid">
-                    <a id="downloadMp4" href="#" target="_blank" class="download-btn">تحميل فيديو (MP4) 📥</a>
-                    <a id="downloadMp3" href="#" target="_blank" class="download-btn" style="background-color: #198754;">تحميل صوت (MP3) 🎵</a>
+                    <a id="btnMp4" href="#" target="_blank" class="download-btn">تحميل MP4 📥</a>
+                    <a id="btnMp3" href="#" target="_blank" class="download-btn mp3">تحميل MP3 🎵</a>
                 </div>
             </div>
         </section>
@@ -356,12 +309,12 @@
                 <div class="card">
                     <div class="card-icon">✍️</div>
                     <h3>2. ألصق الرابط</h3>
-                    <p>ألصقه في مربع البحث بالأعلى.</p>
+                    <p>ضعه في مربع البحث بالأعلى.</p>
                 </div>
                 <div class="card">
                     <div class="card-icon">⬇️</div>
-                    <h3>3. حمل</h3>
-                    <p>اضغط تحليل وحمل ملفك فوراً.</p>
+                    <h3>3. حمل فوراً</h3>
+                    <p>اختر الجودة وحمل ملفك.</p>
                 </div>
             </div>
         </section>
@@ -395,82 +348,40 @@
             themeToggleBtn.textContent = theme === 'light' ? '🌙' : '☀️';
         }
 
-        // Downloader Logic using Public Backend API proxy method
+        // Direct Generation Logic
         const downloadForm = document.getElementById('downloadForm');
         const videoUrlInput = document.getElementById('videoUrl');
-        const statusMessage = document.getElementById('statusMessage');
-        const analyzeBtn = document.getElementById('analyzeBtn');
         const resultsArea = document.getElementById('resultsArea');
 
-        function showMessage(msg, type) {
-            statusMessage.textContent = msg;
-            statusMessage.className = `status-message ${type}`;
-            statusMessage.style.display = 'block';
-        }
-
-        function hideMessage() {
-            statusMessage.style.display = 'none';
-        }
-
-        downloadForm.addEventListener('submit', async (e) => {
+        downloadForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const url = videoUrlInput.value.trim();
             
-            hideMessage();
-            resultsArea.style.display = 'none';
-
             if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
-                showMessage('الرابط غير صحيح. يرجى إدخال رابط يوتيوب صالح.', 'error');
+                alert('الرابط غير صحيح. يرجى إدخال رابط يوتيوب صالح.');
                 return;
             }
 
-            analyzeBtn.disabled = true;
-            analyzeBtn.textContent = 'جاري التحليل...';
-            showMessage('جاري التواصل مع الخادم لاستخراج الروابط...', 'loading');
-
-            try {
-                // جلب رابط الفيديو بصيغة MP4
-                const resMp4 = await fetch('https://co.wuk.sh/api/json', {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: url, vQuality: "720" })
-                });
-                const dataMp4 = await resMp4.json();
-
-                // جلب رابط الصوت بصيغة MP3
-                const resMp3 = await fetch('https://co.wuk.sh/api/json', {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: url, isAudioOnly: true })
-                });
-                const dataMp3 = await resMp3.json();
-
-                if (dataMp4.status === 'error' || !dataMp4.url) {
-                    throw new Error(dataMp4.text || "تعذر جلب الملف");
-                }
-
-                // استخراج الصورة المصغرة
-                let videoId = url.split('v=')[1];
-                if (!videoId && url.includes('youtu.be/')) {
-                    videoId = url.split('youtu.be/')[1].split('?')[0];
-                } else if (videoId) {
-                    const ampersand = videoId.indexOf('&');
-                    if (ampersand !== -1) videoId = videoId.substring(0, ampersand);
-                }
-
-                document.getElementById('videoThumbnail').src = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
-                document.getElementById('downloadMp4').href = dataMp4.url;
-                document.getElementById('downloadMp3').href = dataMp3.url || dataMp4.url;
-
-                hideMessage();
-                resultsArea.style.display = 'block';
-
-            } catch (err) {
-                showMessage('عذراً، حدث خطأ أثناء المعالجة أو أن الرابط محمي. جرب رابطاً آخر.', 'error');
-            } finally {
-                analyzeBtn.disabled = false;
-                analyzeBtn.textContent = 'تحليل الفيديو';
+            // استخراج معرف الفيديو لعرض الصورة المصغرة فوراً
+            let videoId = url.split('v=')[1];
+            if (!videoId && url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split('?')[0];
+            } else if (videoId) {
+                const ampersand = videoId.indexOf('&');
+                if (ampersand !== -1) videoId = videoId.substring(0, ampersand);
             }
+
+            if (videoId) {
+                document.getElementById('videoThumbnail').src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            }
+
+            // توجيه روابط التحميل مباشرة لخدمة جاهزة ومستقرة
+            // نستخدم روابط مقتطعة تفتح صفحة التحميل الآمنة للمستخدم
+            document.getElementById('btnMp4').href = `https://www.y2mate.com/youtube/${videoId || ''}`;
+            document.getElementById('btnMp3').href = `https://www.y2mate.com/youtube-mp3/${videoId || ''}`;
+
+            resultsArea.style.display = 'block';
+            resultsArea.scrollIntoView({ behavior: 'smooth' });
         });
     </script>
 </body>
