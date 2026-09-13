@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <title>YouTube Downloader | تحميل فيديوهات يوتيوب بسهولة</title>
+    <title>SaveTube | تحميل فيديوهات يوتيوب بسهولة</title>
     <meta name="description" content="أداة سريعة ومجانية لتحميل فيديوهات YouTube. ضع رابط الفيديو واختر الجودة والصيغة المناسبة للتحميل (MP4, MP3).">
     
     <!-- Google Fonts: Cairo -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS Variables */
         :root {
             --primary-color: #ff0000;
             --primary-hover: #cc0000;
@@ -21,8 +20,6 @@
             --text-primary: #212529;
             --text-secondary: #6c757d;
             --border-color: #dee2e6;
-            --success-color: #198754;
-            --error-color: #dc3545;
             --transition: all 0.3s ease;
         }
 
@@ -96,208 +93,51 @@
         /* Hero Section */
         .hero {
             text-align: center;
-            padding: 80px 0 60px;
+            padding: 60px 0 40px;
         }
 
         .hero h1 {
-            font-size: clamp(32px, 5vw, 48px);
+            font-size: clamp(28px, 5vw, 42px);
             font-weight: 800;
             margin-bottom: 15px;
         }
 
         .hero p {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--text-secondary);
             max-width: 600px;
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
         }
 
-        .search-box {
-            max-width: 700px;
-            margin: 0 auto;
-            display: flex;
-            gap: 10px;
+        /* Widget Box Container */
+        .widget-container {
+            max-width: 750px;
+            margin: 0 auto 50px;
             background: var(--surface-color);
-            padding: 10px;
-            border-radius: 50px;
+            padding: 20px;
+            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border: 1px solid var(--border-color);
-        }
-
-        .search-box input {
-            flex: 1;
-            border: none;
-            background: none;
-            padding: 15px 25px;
-            font-size: 16px;
-            color: var(--text-primary);
-            outline: none;
-        }
-
-        .search-box button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 40px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .search-box button:hover {
-            background-color: var(--primary-hover);
-            transform: scale(1.02);
-        }
-
-        .search-box button:disabled {
-            background-color: var(--text-secondary);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        @media (max-width: 768px) {
-            .search-box {
-                flex-direction: column;
-                border-radius: 20px;
-                background: transparent;
-                box-shadow: none;
-                border: none;
-                padding: 0;
-            }
-            .search-box input {
-                background: var(--surface-color);
-                border-radius: 12px;
-                border: 1px solid var(--border-color);
-                margin-bottom: 10px;
-            }
-            .search-box button {
-                border-radius: 12px;
-                width: 100%;
-            }
-        }
-
-        /* Status & Results Area */
-        .status-message {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 600;
-            display: none;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .status-message.error {
-            background-color: rgba(220, 53, 69, 0.1);
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
-            display: block;
-        }
-
-        .status-message.loading {
-            background-color: rgba(67, 97, 238, 0.1);
-            color: #4361ee;
-            border: 1px solid #4361ee;
-            display: block;
-        }
-
-        .result-card {
-            display: none;
-            background-color: var(--surface-color);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 40px auto;
-            max-width: 900px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-        }
-
-        .result-header {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            text-align: right;
-        }
-
-        @media (max-width: 768px) {
-            .result-header {
-                flex-direction: column;
-            }
-        }
-
-        .video-thumbnail {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .video-info h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .video-info p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .download-options h4 {
-            margin-bottom: 15px;
-            font-size: 18px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            display: inline-block;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .download-btn {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 20px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .download-btn:hover {
-            background-color: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
         }
 
         /* Sections: How it works & Features */
         .section-title {
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
         .card {
             background-color: var(--surface-color);
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             text-align: center;
             border: 1px solid var(--border-color);
@@ -310,7 +150,7 @@
         }
 
         .card-icon {
-            font-size: 40px;
+            font-size: 35px;
             color: var(--primary-color);
             margin-bottom: 15px;
         }
@@ -318,7 +158,7 @@
         /* FAQ Accordion */
         .faq-section {
             max-width: 800px;
-            margin: 0 auto 80px;
+            margin: 0 auto 60px;
         }
 
         .faq-item {
@@ -330,8 +170,8 @@
         }
 
         .faq-question {
-            padding: 20px;
-            font-size: 18px;
+            padding: 18px 20px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
@@ -356,20 +196,20 @@
         footer {
             background-color: var(--surface-color);
             border-top: 1px solid var(--border-color);
-            padding: 60px 0 20px;
-            margin-top: 50px;
+            padding: 40px 0 20px;
+            margin-top: 40px;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+            gap: 30px;
+            margin-bottom: 30px;
         }
 
         .footer-col h4 {
-            font-size: 18px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            margin-bottom: 15px;
         }
 
         .footer-col ul {
@@ -377,12 +217,13 @@
         }
 
         .footer-col ul li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .footer-col ul li a {
             color: var(--text-secondary);
             text-decoration: none;
+            font-size: 14px;
             transition: var(--transition);
         }
 
@@ -394,18 +235,19 @@
             text-align: center;
             color: var(--text-secondary);
             border-top: 1px solid var(--border-color);
-            padding-top: 20px;
+            padding-top: 15px;
+            font-size: 14px;
         }
 
-        /* Policy Alert */
         .policy-alert {
             background-color: rgba(255, 193, 7, 0.1);
             border: 1px solid #ffc107;
             border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 80px;
+            padding: 15px;
+            margin-bottom: 60px;
             text-align: center;
             color: var(--text-primary);
+            font-size: 14px;
         }
     </style>
 </head>
@@ -415,7 +257,7 @@
     <header>
         <div class="container header-content">
             <a href="#" class="logo">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="var(--primary-color)"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="var(--primary-color)"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
                 Save<span>Tube</span>
             </a>
             <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">🌙</button>
@@ -427,38 +269,11 @@
         <!-- Hero Section -->
         <section class="hero container">
             <h1>تحميل فيديوهات YouTube بسهولة</h1>
-            <p>أداة مجانية لتحميل مقاطع الفيديو والمقاطع الصوتية. ضع رابط الفيديو واختر الجودة والصيغة المناسبة (MP4 أو MP3) في ثوانٍ.</p>
+            <p>أداة مجانية لتحميل مقاطع الفيديو والصوت بسرعة فائقة وبدون أي تعقيدات.</p>
             
-            <form id="downloadForm" class="search-box">
-                <input type="text" id="videoUrl" placeholder="ألصق رابط فيديو يوتيوب هنا (مثال: https://www.youtube.com/watch?v=...)" required>
-                <button type="submit" id="analyzeBtn">تحليل الفيديو</button>
-            </form>
-
-            <div id="statusMessage" class="status-message"></div>
-        </section>
-
-        <!-- Dynamic Results Area -->
-        <section id="resultsArea" class="container" style="display: none;">
-            <div class="result-card">
-                <div class="result-header">
-                    <img id="videoThumbnail" src="" alt="Video Thumbnail" class="video-thumbnail">
-                    <div class="video-info">
-                        <h3 id="videoTitle">جاهز للتحميل</h3>
-                        <p>الصيغ المتاحة: MP4 و MP3</p>
-                    </div>
-                </div>
-
-                <div class="download-options">
-                    <h4>فيديو (MP4)</h4>
-                    <div id="videoOptions" class="options-grid">
-                        <!-- أزرار الفيديو -->
-                    </div>
-
-                    <h4>صوت (MP3)</h4>
-                    <div id="audioOptions" class="options-grid">
-                        <!-- أزرار الصوت -->
-                    </div>
-                </div>
+            <!-- أداة التحميل المدمجة (Widget) -->
+            <div class="widget-container">
+                <iframe src="https://loader.to/api/button/?url=&f=mp4&color=ff0000" style="width:100%;height:220px;border:0;overflow:hidden;" scrolling="no"></iframe>
             </div>
         </section>
 
@@ -469,44 +284,17 @@
                 <div class="card">
                     <div class="card-icon">📋</div>
                     <h3>1. انسخ الرابط</h3>
-                    <p>افتح يوتيوب، وابحث عن الفيديو الذي تريده، ثم انسخ الرابط الخاص به.</p>
+                    <p>افتح يوتيوب، وابحث عن الفيديو، ثم انسخ الرابط الخاص به.</p>
                 </div>
                 <div class="card">
                     <div class="card-icon">✍️</div>
                     <h3>2. ألصق الرابط</h3>
-                    <p>عد إلى موقعنا وألصق الرابط في مربع البحث المخصص بالأعلى.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">⚙️</div>
-                    <h3>3. اختر الجودة</h3>
-                    <p>انقر على تحليل وانتظر قليلاً لتظهر لك خيارات التحميل.</p>
+                    <p>ضع الرابط في المربع المخصص بالأعلى.</p>
                 </div>
                 <div class="card">
                     <div class="card-icon">⬇️</div>
-                    <h3>4. اضغط تحميل</h3>
-                    <p>اختر الصيغة (MP4/MP3) واضغط على زر التحميل ليتم الحفظ في جهازك.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features -->
-        <section class="container">
-            <h2 class="section-title">مميزات الأداة</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🚀</div>
-                    <h3>سريع ومجاني</h3>
-                    <p>تحميل الفيديوهات بسرعة فائقة وبدون أي رسوم خفية.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📱</div>
-                    <h3>متوافق مع الهواتف</h3>
-                    <p>واجهة متجاوبة تعمل بكفاءة على جميع الأجهزة المحمولة والكمبيوتر.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🛡️</div>
-                    <h3>بدون تسجيل</h3>
-                    <p>لا نطلب منك إنشاء حساب أو تقديم بيانات شخصية لاستخدام الخدمة.</p>
+                    <h3>3. حمل فوراً</h3>
+                    <p>اضغط على زر التحميل واحفظ الملف في جهازك.</p>
                 </div>
             </div>
         </section>
@@ -518,28 +306,14 @@
             <div class="faq-item">
                 <div class="faq-question">كيف أحمل فيديو من يوتيوب؟ <span>+</span></div>
                 <div class="faq-answer">
-                    <p>كل ما عليك فعله هو نسخ رابط الفيديو من تطبيق أو موقع يوتيوب، ولصقه في مربع البحث أعلى هذه الصفحة، ثم الضغط على "تحليل الفيديو" واختيار الجودة المطلوبة.</p>
+                    <p>فقط انسخ رابط الفيديو، ألصقه في أداة التحميل بالأعلى، واضغط على زر التحميل بالصيغة التي تعجبك.</p>
                 </div>
             </div>
             
             <div class="faq-item">
-                <div class="faq-question">هل الموقع يعمل على أجهزة الآيفون والأندرويد؟ <span>+</span></div>
+                <div class="faq-question">هل الموقع يعمل على الهواتف؟ <span>+</span></div>
                 <div class="faq-answer">
-                    <p>نعم، الموقع مصمم ليكون متجاوباً بالكامل ويعمل بسلاسة على كافة أنظمة التشغيل (iOS, Android, Windows, Mac).</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">ما هي الصيغ المتاحة للتحميل؟ <span>+</span></div>
-                <div class="faq-answer">
-                    <p>نوفر خيارات تحميل الفيديو بصيغة MP4، بالإضافة إلى إمكانية استخراج الصوت بصيغة MP3.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">لماذا لا يعمل بعض الروابط؟ <span>+</span></div>
-                <div class="faq-answer">
-                    <p>قد تفشل بعض الروابط إذا كان الفيديو خاصاً (Private)، أو مقيداً بعمر معين، أو محذوفاً من المنصة.</p>
+                    <p>نعم، الأداة متجاوبة وتعمل بسلاسة على الآيفون والأندرويد والكمبيوتر.</p>
                 </div>
             </div>
         </section>
@@ -547,7 +321,7 @@
         <!-- Policy Alert -->
         <div class="container">
             <div class="policy-alert">
-                <strong>سياسة الاستخدام العادل:</strong> المستخدم هو المسؤول الوحيد عن التأكد من امتلاكه الحقوق أو الإذن اللازم لتنزيل المحتوى. موقعنا أداة تقنية ولا يشجع أو يوافق على أي انتهاك لحقوق الطبع والنشر أو شروط استخدام المنصات.
+                <strong>تنبيه قانوني:</strong> الموقع هو أداة تقنية بحتة ولا يستضيف أي ملفات محمية على خوادمه.
             </div>
         </div>
     </main>
@@ -556,30 +330,21 @@
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <a href="#" class="logo" style="margin-bottom: 20px;">Save<span>Tube</span></a>
-                <p style="color: var(--text-secondary); font-size: 14px;">أداتك السريعة والموثوقة لتحميل الفيديوهات عبر الإنترنت.</p>
+                <a href="#" class="logo" style="margin-bottom: 15px;">Save<span>Tube</span></a>
+                <p style="color: var(--text-secondary); font-size: 13px;">أداتك السريعة لتحميل الفيديوهات.</p>
             </div>
             <div class="footer-col">
                 <h4>روابط سريعة</h4>
                 <ul>
                     <li><a href="#">الرئيسية</a></li>
-                    <li><a href="#">كيفية الاستخدام</a></li>
                     <li><a href="#">الأسئلة الشائعة</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>قانوني</h4>
                 <ul>
-                    <li><a href="#">شروط الاستخدام</a></li>
                     <li><a href="#">سياسة الخصوصية</a></li>
-                    <li><a href="#">حقوق الطبع والنشر</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>تواصل معنا</h4>
-                <ul>
-                    <li><a href="#">اتصل بنا</a></li>
-                    <li><a href="#">الدعم الفني</a></li>
+                    <li><a href="#">شروط الاستخدام</a></li>
                 </ul>
             </div>
         </div>
@@ -590,7 +355,6 @@
 
     <!-- JavaScript Logic -->
     <script>
-        // 1. Theme Toggle Logic
         const themeToggleBtn = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
         
@@ -611,7 +375,6 @@
             themeToggleBtn.textContent = theme === 'light' ? '🌙' : '☀️';
         }
 
-        // 2. FAQ Accordion Logic
         const faqItems = document.querySelectorAll('.faq-item');
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
@@ -623,144 +386,6 @@
                 }
             });
         });
-
-        // 3. Form Submission and API Integration
-        const downloadForm = document.getElementById('downloadForm');
-        const videoUrlInput = document.getElementById('videoUrl');
-        const statusMessage = document.getElementById('statusMessage');
-        const analyzeBtn = document.getElementById('analyzeBtn');
-        const resultsArea = document.getElementById('resultsArea');
-
-        function isValidYouTubeUrl(url) {
-            const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
-            return regex.test(url);
-        }
-
-        function showMessage(msg, type) {
-            statusMessage.textContent = msg;
-            statusMessage.className = `status-message ${type}`;
-        }
-
-        function hideMessage() {
-            statusMessage.className = 'status-message';
-            statusMessage.style.display = 'none';
-        }
-
-        downloadForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const url = videoUrlInput.value.trim();
-            
-            hideMessage();
-            resultsArea.style.display = 'none';
-
-            if (!isValidYouTubeUrl(url)) {
-                showMessage('الرابط غير صحيح. يرجى إدخال رابط يوتيوب صالح.', 'error');
-                return;
-            }
-
-            analyzeBtn.disabled = true;
-            analyzeBtn.textContent = 'جاري التحليل...';
-            showMessage('جاري استخراج روابط التحميل، المرجو الانتظار...', 'loading');
-
-            try {
-                // Fetching via Cobalt API
-                const response = await fetch('https://api.cobalt.tools/api/json', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        url: url,
-                        vQuality: "720",
-                        isAudioOnly: false
-                    })
-                });
-
-                if (!response.ok) throw new Error("SERVER_ERROR");
-                
-                const data = await response.json();
-                
-                if (data.status === 'error') {
-                     throw new Error(data.text);
-                }
-
-                renderResults(data.url, url);
-
-            } catch (error) {
-                showMessage('تعذر جلب الفيديو. قد يكون الفيديو محمي بحقوق الطبع والنشر، أو الخدمة عليها ضغط. جرب مرة أخرى.', 'error');
-            } finally {
-                analyzeBtn.disabled = false;
-                analyzeBtn.textContent = 'تحليل الفيديو';
-            }
-        });
-
-        function renderResults(downloadUrl, originalUrl) {
-            hideMessage();
-            
-            let videoId = originalUrl.split('v=')[1];
-            if (!videoId && originalUrl.includes('youtu.be/')) {
-                videoId = originalUrl.split('youtu.be/')[1].split('?')[0];
-            } else if (videoId) {
-                const ampersandPosition = videoId.indexOf('&');
-                if (ampersandPosition !== -1) {
-                    videoId = videoId.substring(0, ampersandPosition);
-                }
-            }
-
-            document.getElementById('videoThumbnail').src = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
-
-            const videoOptions = document.getElementById('videoOptions');
-            const audioOptions = document.getElementById('audioOptions');
-            
-            videoOptions.innerHTML = `
-                <a href="${downloadUrl}" class="download-btn" target="_blank">
-                    <span>تحميل MP4</span>
-                    <span>📥</span>
-                </a>
-            `;
-
-            audioOptions.innerHTML = `
-                <button onclick="downloadAudio('${originalUrl}', this)" class="download-btn" style="width: 100%; cursor: pointer; border: none;">
-                    <span>تحميل MP3</span>
-                    <span>🎵</span>
-                </button>
-            `;
-
-            resultsArea.style.display = 'block';
-        }
-
-        async function downloadAudio(url, btn) {
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<span>جاري التجهيز...</span><span>⏳</span>';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch('https://api.cobalt.tools/api/json', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        url: url,
-                        isAudioOnly: true
-                    })
-                });
-                
-                const data = await response.json();
-                if (data.url) {
-                    window.open(data.url, '_blank');
-                } else {
-                    alert('عذراً، تعذر استخراج الصوت.');
-                }
-            } catch (err) {
-                alert('حدث خطأ أثناء الاتصال بالخادم.');
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        }
     </script>
 </body>
 </html>
